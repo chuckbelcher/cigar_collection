@@ -36,6 +36,8 @@ def archive():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     if 'logged_in' not in session:
         return redirect(url_for('login'))
     if request.method == 'POST':
@@ -81,19 +83,25 @@ def smoke(id):
     return redirect(url_for('index'))
 
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        admin_user = os.environ.get('ADMIN_USER', 'admin')
-        admin_pass = os.environ.get('ADMIN_PASS', 'password')
-        if username == admin_user and password == admin_pass:
+        user = request.form['username']
+        pw = request.form['password']
+        if user == app.config['ADMIN_USER'] and pw == app.config['ADMIN_PASS']:
             session['logged_in'] = True
-            return redirect(url_for('admin'))
+            return redirect(url_for('index'))
         else:
-            return render_template('login.html', error='Invalid credentials')
+            return render_template('login.html', error="Invalid credentials")
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
 
 @app.route('/logout')
 def logout():
