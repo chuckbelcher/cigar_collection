@@ -9,14 +9,15 @@
 <body class='bg-light'>
   <div class='container py-4'>
     <h1 class='mb-4'>Chuck's Cigar Collection</h1>
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
       {% if session.get('logged_in') %}
-        <div class="text-success">✅ Logged in as admin</div>
-        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+        <span class="badge bg-success">Logged in</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm ms-2">Logout</a>
       {% else %}
-        <div class="text-muted">Not logged in</div>
-        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+        <span class="badge bg-secondary">Not logged in</span>
+        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm ms-2">Login</a>
       {% endif %}
+      <span class="badge bg-info text-dark ms-3">Total Cigars: {{ total_quantity }}</span>
     </div>
     
     <a href='/admin' class='btn btn-primary mb-3'>Add New Cigar</a>

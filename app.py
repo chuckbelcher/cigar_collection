@@ -27,7 +27,8 @@ class Cigar(db.Model):
 @app.route('/')
 def index():
     cigars = Cigar.query.filter_by(archived=False).order_by(Cigar.brand).all()
-    return render_template('index.html', cigars=cigars)
+    total_quantity = sum(c.quantity for c in cigars)
+    return render_template('index.html', cigars=cigars, total_quantity=total_quantity)
 
 @app.route('/archive')
 def archive():
