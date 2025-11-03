@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
@@ -24,6 +25,15 @@ class Cigar(db.Model):
     archived = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/')
 def index():
     cigars = Cigar.query.filter_by(archived=False).order_by(Cigar.brand).all()
@@ -31,11 +41,13 @@ def index():
     return render_template('index.html', cigars=cigars, total_quantity=total_quantity)
 
 @app.route('/archive')
+@login_required
 def archive():
     cigars = Cigar.query.filter_by(archived=True).order_by(Cigar.brand).all()
     return render_template('archive.html', cigars=cigars)
 
 @app.route('/admin', methods=['GET', 'POST'])
+@login_required
 def admin():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
@@ -69,6 +81,7 @@ def archive_toggle(cigar_id):
     return redirect(request.referrer or url_for('index'))
 
 @app.route('/delete/<int:cigar_id>')
+@login_required
 def delete(cigar_id):
     cigar = Cigar.query.get_or_404(cigar_id)
     db.session.delete(cigar)
@@ -76,6 +89,7 @@ def delete(cigar_id):
     return redirect(request.referrer or url_for('index'))
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit(id):
     cigar = Cigar.query.get_or_404(id)
     if request.method == 'POST':
@@ -91,6 +105,7 @@ def edit(id):
 
 
 @app.route('/smoke/<int:id>', methods=['POST'])
+@login_required
 def smoke(id):
     cigar = Cigar.query.get_or_404(id)
     if cigar.quantity > 0:
