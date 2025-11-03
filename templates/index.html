@@ -9,16 +9,28 @@
 <body class='bg-light'>
   <div class='container py-4'>
     <h1 class='mb-4'>Chuck's Cigar Collection</h1>
-    <div>
-      {% if session.get('logged_in') %}
-        <span class="badge bg-success">Logged in</span>
-        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm ms-2">Logout</a>
-      {% else %}
-        <span class="badge bg-secondary">Not logged in</span>
-        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm ms-2">Login</a>
-      {% endif %}
-      <span class="badge bg-info text-dark ms-3">Total Cigars: {{ total_quantity }}</span>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="mb-0">Chuck's Cigar Collection</h1>
+        <div class="mt-2">
+          {% if session.get('logged_in') %}
+            <span class="badge bg-success me-2">Logged in</span>
+          {% else %}
+            <span class="badge bg-secondary me-2">Not logged in</span>
+          {% endif %}
+          <span class="badge bg-info text-dark">Total Cigars: {{ total_quantity }}</span>
+        </div>
+      </div>
+      
+      <div>
+        {% if session.get('logged_in') %}
+          <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+        {% endif %}
+      </div>
     </div>
+    
     
     <a href='/admin' class='btn btn-primary mb-3'>Add New Cigar</a>
     <a href='/archive' class='btn btn-secondary mb-3'>View Archive</a>
