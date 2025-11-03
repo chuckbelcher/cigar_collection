@@ -89,7 +89,7 @@ def login():
     if request.method == 'POST':
         user = request.form['username']
         pw = request.form['password']
-        if user == app.config['ADMIN_USER'] and pw == app.config['ADMIN_PASS']:
+        if user == os.environ.get('ADMIN_USER') and pw == os.environ.get('ADMIN_PASS'):
             session['logged_in'] = True
             return redirect(url_for('index'))
         else:
