@@ -11,16 +11,16 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>
         <h1 class="mb-0">Chuck's Cigar Collection</h1>
-        <div class="mt-2">
+        <div class="mt-2 text-muted">
           {% if session.get('logged_in') %}
-            <span class="badge bg-success me-2">Logged in</span>
+            Logged in |
           {% else %}
-            <span class="badge bg-secondary me-2">Not logged in</span>
+            Not logged in |
           {% endif %}
-          <span class="badge bg-info text-dark">Total Cigars: {{ total_quantity }}</span>
+          Total Cigars: <strong>{{ total_quantity }}</strong>
         </div>
       </div>
-      
+    
       <div>
         {% if session.get('logged_in') %}
           <a href="{{ url_for('logout') }}" class="btn btn-outline-danger btn-sm">Logout</a>
@@ -29,6 +29,7 @@
         {% endif %}
       </div>
     </div>
+    
     
     
     <a href='/admin' class='btn btn-primary mb-3'>Add New Cigar</a>
