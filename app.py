@@ -74,6 +74,21 @@ def delete(cigar_id):
     db.session.commit()
     return redirect(request.referrer or url_for('index'))
 
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    cigar = Cigar.query.get_or_404(id)
+    if request.method == 'POST':
+        cigar.quantity = request.form.get('quantity', cigar.quantity)
+        date_str = request.form.get('purchase_date')
+        cigar.purchase_date = (
+            datetime.strptime(date_str, '%Y-%m-%d') if date_str else cigar.purchase_date
+        )
+        cigar.rating = int(request.form.get('rating', cigar.rating))
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('edit.html', cigar=cigar)
+
+
 @app.route('/smoke/<int:id>', methods=['POST'])
 def smoke(id):
     cigar = Cigar.query.get_or_404(id)
