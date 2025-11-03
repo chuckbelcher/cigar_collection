@@ -41,7 +41,6 @@ def index():
     return render_template('index.html', cigars=cigars, total_quantity=total_quantity)
 
 @app.route('/archive')
-@login_required
 def archive():
     cigars = Cigar.query.filter_by(archived=True).order_by(Cigar.brand).all()
     return render_template('archive.html', cigars=cigars)
@@ -74,6 +73,7 @@ def admin():
     return render_template('admin.html')
 
 @app.route('/archive_toggle/<int:cigar_id>')
+@login_required
 def archive_toggle(cigar_id):
     cigar = Cigar.query.get_or_404(cigar_id)
     cigar.archived = not cigar.archived

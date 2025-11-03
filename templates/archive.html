@@ -20,7 +20,9 @@
           <td>{{ c.purchase_date.strftime('%Y-%m-%d') if c.purchase_date else '' }}</td>
           <td>{{ c.quantity }}</td>
           <td>{% for i in range(c.rating) %}⭐{% endfor %}</td>
+          {% if session.get('logged_in') %}
           <td><a href='/archive_toggle/{{ c.id }}' class='btn btn-sm btn-success'>Restore</a></td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>
