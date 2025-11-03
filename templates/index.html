@@ -33,6 +33,7 @@
           <td>{{ c.quantity }}</td>
           <td>{% for i in range(c.rating) %}⭐{% endfor %}</td>
           <td>
+            <a href="{{ url_for('edit', id=c.id) }}" class="btn btn-sm btn-info">Edit</a>
             <a href='/archive_toggle/{{ c.id }}' class='btn btn-sm btn-warning'>Archive</a>
             <a href='/delete/{{ c.id }}' class='btn btn-sm btn-danger'>Delete</a>
             <form action="{{ url_for('smoke', id=c.id) }}" method="post" style="display:inline;">
