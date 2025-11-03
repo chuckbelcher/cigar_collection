@@ -72,6 +72,15 @@ def delete(cigar_id):
     db.session.commit()
     return redirect(request.referrer or url_for('index'))
 
+@app.route('/smoke/<int:id>', methods=['POST'])
+def smoke(id):
+    cigar = Cigar.query.get_or_404(id)
+    if cigar.quantity > 0:
+        cigar.quantity -= 1
+        db.session.commit()
+    return redirect(url_for('index'))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
