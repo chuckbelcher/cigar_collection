@@ -25,7 +25,7 @@
           <td>
             <a href='/archive_toggle/{{ c.id }}' class='btn btn-sm btn-warning'>Archive</a>
             <a href='/delete/{{ c.id }}' class='btn btn-sm btn-danger'>Delete</a>
-            <form action="{{ url_for('smoke', id=cigar.id) }}" method="post" style="display:inline;">
+            <form action="{{ url_for('smoke', id=c.id) }}" method="post" style="display:inline;">
               <button type="submit" class="btn btn-secondary btn-sm">Smoked</button>
           </form>          
           </td>
